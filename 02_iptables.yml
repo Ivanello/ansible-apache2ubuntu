@@ -1,0 +1,28 @@
+---
+
+  - hosts: all
+    become: true
+
+    vars_files:
+      - vars/default.yml
+
+    tasks:
+
+  # Drop all incoming traffic
+  # iptables -P INPUT DROP
+     - iptables:
+         chain: INPUT
+         protocol: all
+         jump: DROP
+       become: yes
+
+  # Allow all outgoing traffic
+  # iptables -A INPUT -p tcp -m tcp -s xx.xx.xx.xx/32 --dport 22 -j ACCEPT
+     - iptables:
+         action: append
+         chain: INPUT
+         protocol: tcp
+         source: ip_address
+         destination_port: "{{http_port}}"
+         jump: ACCEPT
+       become: yes  
