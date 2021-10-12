@@ -1,0 +1,19 @@
+---
+
+  - hosts: all
+    become: true
+
+    vars_files:
+      - vars/default.yml
+
+  - name: System setup
+    import_playbook: 01_system_setup.yml
+
+  # - name: Configure Iptables
+  #   import_playbook: 02_iptables.yml
+
+  - name: Install Apache2
+    import_playbook: 03_apache2.yml
+  
+  - name: Install Docker
+    import_playbook: 04_docker.yml
